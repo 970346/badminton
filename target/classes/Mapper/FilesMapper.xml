@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.badmintonsystem.Dao.FilesMapper">
+    <!--插入文件地址-->
+    <select id="InsertFiles" resultType="com.badmintonsystem.Bean.Files">
+        insert into files(fname,faddress) values(#{fname},#{faddress})
+    </select>
+    <!--查询所有文件地址-->
+    <select id="SelectAllFiles" resultType="com.badmintonsystem.Bean.Files">
+        select * from files
+    </select>
+    <!--删除文件-->
+    <select id="DelFiles" resultType="com.badmintonsystem.Bean.Files">
+        delete from files where fname=#{fanem}
+    </select>
+    <!--根据文件名查文件地址-->
+    <select id="SelectFilesByName" resultType="java.lang.String">
+        select faddress from files where fname=#{fanem}
+    </select>
+</mapper>

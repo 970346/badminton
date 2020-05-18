@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.badmintonsystem.Dao.UserMapper">
+    <update id="UpdateUserState">
+        update badminton.user set state='f' where uid=#{uid}
+    </update>
+    <select id="AddUser" resultType="com.badmintonsystem.Bean.User">
+        INSERT INTO badminton.user(uid,upwd,rid,state) VALUES (#{uid},#{upwd},#{rid},#{state})
+    </select>
+    <update id="UpdateUserToCom">
+        update badminton.user set rid=5 where uid=#{uid}
+    </update>
+    <update id="UpdateUserToStu">
+         update badminton.user set rid=3 where uid=#{uid}
+    </update>
+</mapper>

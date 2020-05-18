@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.badmintonsystem.Dao.InfoMapper">
+    <resultMap id="WithStu" type="com.badmintonsystem.Bean.Community">
+        <id column="num" jdbcType="INTEGER" property="num"/>
+        <result column="comname" jdbcType="VARCHAR" property="comname"/>
+        <association property="student" javaType="com.badmintonsystem.Bean.Student">
+            <id column="stuid" property="stuid"></id>
+            <result column="stuname" property="stuname"></result>
+        </association>
+    </resultMap>
+    <sql id="WithStu_Column_List">
+        c.num,c.comname,c.stuid, s.stuname
+    </sql>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <insert id="AddCom">
+        insert into community(comname,stuid) values(#{comname},#{stuid});
+    </insert>
+
+    <!--插入学生-->
+    <select id="InsertStu" resultType="com.badmintonsystem.Bean.Student">
+        insert into student(stuid,stuname) values(#{stuid},#{stuname});
+    </select>
+    <!--查询学生-->
+    <select id="SelectStuAll" resultType="com.badmintonsystem.Bean.Student">
+        SELECT * FROM student WHERE CONCAT(stuid,stuname) LIKE "%"#{any}"%"
+    </select>
+    <!--删除学生-->
+    <select id="DelStu" parameterType="com.badmintonsystem.Bean.Student">
+        delete from student where stuid=#{stuid}
+    </select>
+    <!--删除社团学生-->
+    <select id="DelComStu" parameterType="com.badmintonsystem.Bean.Community">
+        delete from community where stuid=#{stuid}
+    </select>
+    <!--插入学生-->
+    <select id="InsertTea" resultType="com.badmintonsystem.Bean.Teacher">
+        insert into teacher(teaid,teaname) values(#{teaid},#{teaname});
+    </select>
+
+    <!--查询教师-->
+    <select id="SelectTeaAll" resultType="com.badmintonsystem.Bean.Teacher">
+        SELECT * FROM teacher WHERE CONCAT(teaid,teaname) LIKE "%"#{any}"%"
+    </select>
+    <!--删除教师-->
+    <select id="DeleTeaById" parameterType="com.badmintonsystem.Bean.Teacher">
+        delete from teacher where teaid = #{teaid}
+    </select>
+
+
+    <!--插入社团学生-->
+    <select id="InsertCom" resultType="com.badmintonsystem.Bean.Community">
+        insert into community(comname,stuid) values(#{comname},#{stuid});
+    </select>
+    <!--查询社团学生-->
+    <select id="selectByExampleWithStu" resultMap="WithStu">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="WithStu_Column_List"/>
+        from community c left join student s on
+        c.`stuid`=s.`stuid`
+    </select>
+    <!--删除社团学生信息-->
+    <select id="DeleComById" parameterType="java.lang.Integer">
+        delete from community where num = #{num}
+    </select>
+    <!--通过学号和社团名查社团num-->
+    <select id="selectCmobyStu" resultType="com.badmintonsystem.Bean.Community">
+        select num from community where stuid=#{stuid} and comname=#{comname}
+    </select>
+
+    <!--模糊查询社团学生信息-->
+    <select id="SelectCom" resultMap="WithStu">
+        SELECT
+        c.comname,c.stuid, s.stuname
+        FROM community c LEFT JOIN student s ON
+        c.`stuid`=s.`stuid` WHERE CONCAT(c.`comname`,c.`stuid`,s.`stuname`) LIKE "%"#{any}"%"
+    </select>
+
+    <!--新增学生信息-->
+    <select id="AddStu" resultType="com.badmintonsystem.Bean.Student">
+        insert into student(stuid,stuname) values (#{stuid},#{stuname})
+    </select>
+    <!--新增教师信息-->
+    <select id="AddTea" resultType="com.badmintonsystem.Bean.Teacher">
+        insert into teacher(teaid,teaname) values (#{teaid},#{teaname})
+    </select>
+
+    <select id="DelUser" resultType="com.badmintonsystem.Bean.User">
+        delete from user where uid=#{uid}
+    </select>
+    <select id="SelectStuById" resultType="com.badmintonsystem.Bean.Student">
+        select * from student where stuid = #{stuid}
+    </select>
+    <select id="seletcomnum" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM community WHERE stuid=#{stuid}
+    </select>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.badmintonsystem.Dao.SiteMapper">
+    <resultMap id="WithOption" type="com.badmintonsystem.Bean.Sites">
+        <id column="sid" jdbcType="INTEGER" property="sid"/>
+        <result column="sname" jdbcType="VARCHAR" property="sname"/>
+        <result column="time" jdbcType="INTEGER" property="time"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <association property="toption" javaType="com.badmintonsystem.Bean.Toption">
+            <id column="id" property="id"></id>
+            <result column="time" property="time"></result>
+            <result column="tinterval" property="tinterval"></result>
+        </association>
+    </resultMap>
+    <sql id="WithOption_Column_List">
+       s.sid,s.sname,t.time,t.tinterval,s.state
+    </sql>
+
+
+    <select id="SelectAllSite" resultMap="WithOption">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="WithOption_Column_List"/>
+        from site s LEFT JOIN toption t ON
+        s.`time`=t.`id`
+    </select>
+    <select id="CloseSites" resultType="com.badmintonsystem.Bean.Sites">
+        update site set state = 'f' where sid in (1,2,3,4,5,6,7,8,9)
+    </select>
+    <select id="CloseSitess" resultType="com.badmintonsystem.Bean.Sites">
+        update site set site.time = 8 where sid in (1,2,3,4,5,6,7,8,9)
+    </select>
+    <select id="OpenSites" resultType="com.badmintonsystem.Bean.Sites">
+        update site set state = 't' where sid in (1,2,3,4,5,6,7,8,9)
+    </select>
+    <select id="OpenSitess" resultType="com.badmintonsystem.Bean.Sites">
+        update site set site.time = 7 where sid in (1,2,3,4,5,6,7,8,9)
+    </select>
+    <select id="Selectsname" resultType="java.lang.String">
+        select sname from site where sid=#{sid}
+    </select>
+    <select id="CloseSite" resultType="com.badmintonsystem.Bean.Sites">
+        UPDATE site SET site.`time`=8,state='f' WHERE sid=#{sid}
+    </select>
+    <select id="OpenSite" resultType="com.badmintonsystem.Bean.Sites">
+        UPDATE site SET site.`time`=#{time},state='t' WHERE sid=#{sid}
+    </select>
+    <select id="SelectTime" resultType="java.lang.Integer">
+        select time from site where sid=#{sid}
+    </select>
+</mapper>

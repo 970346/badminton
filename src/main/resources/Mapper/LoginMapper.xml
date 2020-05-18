@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.badmintonsystem.Dao.LoginMapper">
+    <select id="SelectUser" resultType="com.badmintonsystem.Bean.User">
+        select * from user where uid=#{uid} and upwd=#{upwd}
+    </select>
+    <select id="SelectUserById" resultType="com.badmintonsystem.Bean.User">
+        select * from user where uid=#{uid}
+    </select>
+
+    <select id="AddUser" resultType="com.badmintonsystem.Bean.User">
+        insert into user(uid,upwd,rid) values (#{uid},#{upwd},#{rid})
+    </select>
+
+    <select id="UpdateUser" resultType="com.badmintonsystem.Bean.User">
+        update user set upwd=#{upwd} where uid=#{uid}
+    </select>
+
+    <select id="SelectStudentById" resultType="com.badmintonsystem.Bean.Student">
+        select * from student where stuid=#{stuid}
+    </select>
+
+    <select id="SelectTeacherById" resultType="com.badmintonsystem.Bean.Teacher">
+        select * from teacher where teaid=#{teaid}
+    </select>
+
+    <select id="SelectCommunityById" resultType="com.badmintonsystem.Bean.Community">
+        select * from community where stuid=#{stuid}
+    </select>
+
+    <select id="Selectridbyuid" resultType="java.lang.Integer">
+        select rid from user where uid=#{uid}
+    </select>
+
+</mapper>

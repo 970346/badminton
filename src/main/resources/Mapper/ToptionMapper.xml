@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.badmintonsystem.Dao.ToptionMapper">
+    <select id="SelectByInterval" resultType="com.badmintonsystem.Bean.Toption">
+        select * from toption where tinterval=#{tinterval}
+    </select>
+    <select id="SelectTime" resultType="java.lang.Integer">
+         select time from toption where id=#{id}
+    </select>
+</mapper>

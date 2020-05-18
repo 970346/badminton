@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.badmintonsystem.Dao.OrderMapper">
+    <delete id="Delete">
+        delete from badminton.order where uid=#{uid}
+    </delete>
+    <select id="AddOrder" resultType="com.badmintonsystem.Bean.Order">
+        insert into badminton.order(orid,uid,sid,stime,timenterval,odata,stprice,balls,rackets,gdprice,tlprice,instructions,ostate)
+        values (#{orid},#{uid},#{sid},#{stime},#{timenterval},#{odata},#{stprice},#{balls},#{rackets},#{gdprice},#{tlprice},#{instructions},#{ostate})
+   </select>
+   <select id="SelectAllOrder" resultType="com.badmintonsystem.Bean.Order">
+        select * from badminton.order
+   </select>
+    <select id="SelectAllOrderByUid" resultType="com.badmintonsystem.Bean.Order">
+        select * from badminton.order where uid=#{uid} ORDER BY orid DESC
+    </select>
+    <select id="UpdateOrder" resultType="com.badmintonsystem.Bean.Order">
+        update badminton.order set ostate='f' where orid=#{orid}
+    </select>
+    <select id="SelectAllOrderByOrid" resultType="com.badmintonsystem.Bean.Order">
+         select * from badminton.order where orid=#{orid}
+    </select>
+    <select id="SelectAllToday" resultType="com.badmintonsystem.Bean.Order">
+        SELECT * FROM badminton.order WHERE  TO_DAYS(odata) =  TO_DAYS(NOW()) ORDER BY ostate DESC ,sid ASC
+    </select>
+    <select id="SelectAnyMonth" resultType="com.badmintonsystem.Bean.Order">
+        SELECT * FROM badminton.`order` WHERE MONTH(odata)=#{odata}
+    </select>
+    <select id="SelectLikeOrders" resultType="com.badmintonsystem.Bean.Order">
+        SELECT * FROM badminton.`order` WHERE CONCAT(orid,uid) LIKE "%"#{any}"%"
+    </select>
+</mapper>
+
+<!--SELECT * FROM badminton.`order` WHERE MONTH(odata)=#{odata} GROUP BY odata DESC-->
